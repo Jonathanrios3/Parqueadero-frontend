@@ -1,0 +1,144 @@
+<div class="container">
+	<div class="row borderRow">
+		<h1 class="text-center titleParqueadero"><strong>PARQUEADEROS</strong></h1>
+		<div class="col-md-6">
+			<form>
+				<h4 class="text-muted"><strong>Ingresar Automovil</strong></h4>
+				<div class="form-group">
+					<input type="text" class="form-control" ng-model="vm.ingresar.placa" placeholder="Registre la placa">
+				</div>
+				<div class="form-group">
+					<div>
+						<input type="text" class="form-control placa" placeholder="{{vm.horas | date:'hh:mm a'}}">
+						<button type="button" class="btn btn-success pull-right cambiar" ng-click="vm.consultarHora()" name="button">Consultar Hora</button>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="">Hora Actual</label>
+					<div type="text" class="form-control" placeholder="Hora Actual">{{vm.clock | date:'hh:mm:ss a'}}<!--{{vm.parqueadero[0].horaActual}}--></div>
+				</div>
+				<div class="form-group">
+					<label for="">Tarifa</label>
+					<div type="text"><input type="number" string-to-number ng-model="vm.parqueadero[0].tarifa" class="form-control" placeholder="${{vm.parqueadero[0].tarifa}}">
+						<button class="btn btn-success pull-right cambiar" ng-click="vm.actualizarTarifa(vm.parqueadero[0])">cambiar</button></div>
+				</div>
+
+				<button ng-click="vm.ingresarCarro()" class="btn btn-success col-md-3">Ingresar Carro</button>
+			</form>
+		</div>
+		<div class="col-md-6" ng-show="vm.show">
+			<table class="table table-responsive">
+				<thead>
+					<tr>
+						<th>Placa</th>
+						<th>Hora Entrada</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>{{vm.mostrar.placa}}</td>
+						<td>{{vm.horas | date:'hh:mm a'}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	</div>
+	<br>
+	<div class="container">
+		<div class="row">
+				<div class="col-md-6">
+					<form>
+						<h4 class="text-muted"><strong>Asignar Puesto</strong></h4>
+						<div class="form-group">
+							<input type="text" class="form-control" ng-model="vm.asignar.automovil.placa" placeholder="Ingrese la placa">
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" ng-model="vm.asignar.parqueadero.id" placeholder="Ingrese id del parqueadero">
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control" ng-model="vm.asignar.id" placeholder="Puesto">
+						</div>
+						<div class="form-group">
+						<label for="">Puestos Disponibles</label>
+							<div type="text" class="form-control">{{vm.parqueadero[0].tamano}}</div>
+						</div>
+						<button ng-click="vm.asignarPuesto()" class="btn btn-success col-md-3">Asignar puesto</button>
+					</form>
+				</div>
+				<div class="col-md-6" ng-show="vm.show2">
+					<table class="table table-responsive">
+						<thead>
+							<tr>
+								<th>Placa</th>
+								<th>Parqueadero</th>
+								<th>Puesto</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{vm.carroAsignado.automovil.placa}}</td>
+								<td>{{vm.carroAsignado.parqueadero.id}}</td>
+								<td>{{vm.carroAsignado.id}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		</div>
+	</div>
+	<br>
+	<div class="container">
+		<div class="row">
+				<div class="col-md-12">
+					<h4 class="titleSalida text-center"><strong>retirar automovil</strong> <i class="fa fa-btc cash"></i><br class="visible-xs"><br class="visible-xs"><span class="text-center ingreso visible-xs"><strong>Ingresos Parqueadero</strong><br>${{vm.parqueadero[0].ingresos}}</span> <span class="pull-right ingreso hidden-xs"><strong>Ingresos Parqueadero</strong> <br>${{vm.parqueadero[0].ingresos}}</h4><br>
+					<table class="table table-responsive">
+						<thead>
+							<tr>
+								<th>Placa</th>
+								<th>Hora de entrada</th>
+								<th>Parqueadero</th>
+								<th>Puesto</th>
+								<th>Disponibilidad de Puesto</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in vm.puestos">
+								<td>{{item.automovil.placa}}</td>
+								<td>{{item.automovil.horaEntrada | date:'hh:mm a'}}</td>
+								<td>{{item.parqueadero.id}}</td>
+								<td>{{item.id}}</td>
+								<td>
+									<input type="number" max="1" min="0" class="form-control"  style="width:200px" ng-value="item.diponibilidadPuesto" placeholder="{{item.diponibilidadPuesto}}" ng-model="item.diponibilidadPuesto">
+								</td>
+								<td>
+									<button class="btn btn-success" ng-click="vm.capturar(item)">Dar salida</button>
+									<!--ng-model="item.id"-->
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modalPuesto">
+	  <div class="modal-dialog">
+	    <div class="modal-content modal-altura">
+	      <div class="modal-header borderModalHeader">
+	        <button type="button" class="close quitarOpacity" aria-hidden="false"><i class="fa fa-btc cash"></i></button>
+	        <h4 class="modal-title titleModal">Cancelar Cuenta Parqueadero</h4>
+	      </div>
+	      <div class="modal-body borderModalBody">
+	        <strong><h3>Automovil</h3></strong>
+	        <p class="text-muted">Placa: <span><strong>{{vm.carroActualizado.automovil.placa}}</strong></span></p>
+	        <p class="text-muted">Hora Entrada: <span><strong>{{vm.carroActualizado.automovil.horaEntrada | date:'hh:mm a'}}</strong></span></p>
+	        <span class="fa fa-car cash2 pull-right"></span>
+	        <p class="text-muted">Hora Salida: <span><strong>{{vm.horaSalida | date:'hh:mm a'}}</strong></span></p>
+	        <p class="text-muted">Total a Pagar: <span><strong>${{vm.carroActualizado.parqueadero.tarifa}}</strong><span></p>
+	      </div>
+	      <div class="modal-footer borderModalFooter">
+	        <button type="submit" class="btn btn-success" ng-click="vm.actualizarPuesto(vm.carroActualizado)" data-dismiss="modal">Confirmar pago</button>
+	        <!--<button id="btnNoRegistrar" class="btn btn-warning" data-dismiss="modal" ng-click="vm.noMostrarModal()">No quiero el descuento</button>-->
+	      </div>
+	    </div>
+	  </div>
+	</div>
